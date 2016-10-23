@@ -5,6 +5,8 @@ public class Main {
 	{
 		System.out.println("First commit!");
 		System.out.println("Second commit!");
+		int i = 0;
+		System.out.println(i);
 	}
 
 }
