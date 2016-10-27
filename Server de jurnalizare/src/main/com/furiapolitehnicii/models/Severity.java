@@ -1,5 +1,10 @@
 package com.furiapolitehnicii.models;
-
-public class Severity {
-
+/**
+ * TODO: look at Constants class on how to comment.
+ * 
+ * @author Mihut
+ *
+ */
+public enum Severity {
+	INFO, DEBUG, WARNING, ERROR
 }
