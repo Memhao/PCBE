@@ -1,9 +1,6 @@
 package com.furiapolitehnicii.behaviours;
 
 import java.io.File;
-import java.util.List;
-
-import com.furiapolitehnicii.models.SharedResource;
 /**
  *
  * @author Mihut
@@ -15,14 +12,14 @@ import com.furiapolitehnicii.models.SharedResource;
 public class ClientThread extends Thread {
 	private String clientName;
 	private String clientID;
-	private List<File> files;
+	private File file;
 	private Job job;
 
-	public ClientThread(String clientName, String clientID, List<File> files,
+	public ClientThread(String clientName, String clientID, File file,
 			Job job) {
 		this.clientName = clientName;
 		this.clientID = clientID;
-		this.files = files;
+		this.file = file;
 		this.job = job;
 	}
 
@@ -30,23 +27,17 @@ public class ClientThread extends Thread {
 		return clientName;
 	}
 
-	public List<File> getFiles() {
-		return files;
+	public File getFiles() {
+		return file;
 	}
 
 	public String getClientID() {
 		return clientID;
 	}
-
-	public SharedResource getMessagesBucket() {
-		// TODO:Set a convetion about the lines written in files, save data in a
-		// structure(Message object) --> use regular expression
-		return null;
-	}
 	// TODO: implement the method
 	@Override
 	public void run() {
-
+		job.execute();
 	}
 
 }
