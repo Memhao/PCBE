@@ -28,4 +28,10 @@ public class Message {
 		return author;
 	}
 
+	@Override
+	public String toString() {
+		return "Message [severity=" + severity + ", content=" + content
+				+ ", author=" + author + "]";
+	}
+
 }

@@ -33,12 +33,24 @@ public class ReadingJob implements Job {
 					new InputStreamReader(new FileInputStream(file)));
 			String line;
 			while ((line = bf.readLine()) != null) {
-				Matcher m = pattern.matcher(line);
-				String severity = m.group(1);
-				String content = m.group(2);
-				ISeverity.Severity sseverity = ISeverity.getSeverity(severity);
 
-				sharedResource.put(new Message(sseverity, content, idClient));
+				Matcher m = pattern.matcher(line);
+				String severity = null;
+				String content = null;
+				while (m.find()) {
+					severity = m.group(1);
+					content = m.group(2);
+				}
+				// TODO review this
+				if (severity != null && content != null) {
+					ISeverity.Severity sseverity = ISeverity
+							.getSeverity(severity);
+					Message msg = new Message(sseverity, content, idClient);
+					System.out.println(msg);
+					sharedResource.put(msg);
+
+				}
+
 			}
 			bf.close();
 		} catch (FileNotFoundException e) {

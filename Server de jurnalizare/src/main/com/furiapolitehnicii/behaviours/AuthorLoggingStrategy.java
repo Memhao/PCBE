@@ -19,10 +19,9 @@ public class AuthorLoggingStrategy implements LoggingStrategy {
 	private int noOfRotations;
 	private Map<String, FileHandler> clientsName = new HashMap<String, FileHandler>();
 
-	public AuthorLoggingStrategy(Resource resource, Logger logger,
-			String logPath, int logSize, int noOfRotations) {
+	public AuthorLoggingStrategy(Resource resource, String logPath, int logSize,
+			int noOfRotations) {
 		this.resource = resource;
-		this.logger = logger;
 		this.logPath = logPath;
 		this.logSize = logSize;
 		this.noOfRotations = noOfRotations;
