@@ -3,19 +3,27 @@ package com.furiapolitehnicii.behaviours;
 import java.io.File;
 import java.util.List;
 
-import com.furiapolitehnicii.models.MessagesBucket;
+import com.furiapolitehnicii.models.SharedResource;
 /**
- * 
+ *
  * @author Mihut
  *
  */
+/*
+ * @todo Change class name
+ */
 public class ClientThread extends Thread {
 	private String clientName;
+	private String clientID;
 	private List<File> files;
+	private Job job;
 
-	public ClientThread(String name, List<File> files) {
-		this.clientName = name;
+	public ClientThread(String clientName, String clientID, List<File> files,
+			Job job) {
+		this.clientName = clientName;
+		this.clientID = clientID;
 		this.files = files;
+		this.job = job;
 	}
 
 	public String getClientName() {
@@ -26,7 +34,11 @@ public class ClientThread extends Thread {
 		return files;
 	}
 
-	public MessagesBucket getMessagesBucket() {
+	public String getClientID() {
+		return clientID;
+	}
+
+	public SharedResource getMessagesBucket() {
 		// TODO:Set a convetion about the lines written in files, save data in a
 		// structure(Message object) --> use regular expression
 		return null;
