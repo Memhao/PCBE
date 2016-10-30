@@ -8,7 +8,7 @@ import com.furiapolitehnicii.jobs.LoggingJob;
 import com.furiapolitehnicii.jobs.ReadingJob;
 import com.furiapolitehnicii.resources.Message;
 import com.furiapolitehnicii.resources.SharedResource;
-import com.furiapolitehnicii.strategies.SeverityLoggingStrategy;
+import com.furiapolitehnicii.strategies.SeverityLoggingStrategy2;
 import com.furiapolitehnicii.threads.client.ClientThread;
 import com.furiapolitehnicii.threads.server.ServerThread;
 
@@ -37,14 +37,16 @@ public class Main {
 		// new AuthorLoggingStrategy(res, "src\\", 1000, 3));
 
 		LoggingJob job2 = new LoggingJob(
-				new SeverityLoggingStrategy(res, "src\\", 500, 2));
+				new SeverityLoggingStrategy2(res, "src\\", 500, 2));
 		LoggingJob job3 = new LoggingJob(
-				new SeverityLoggingStrategy(res, "src\\", 500, 3));
+				new SeverityLoggingStrategy2(res, "src\\", 500, 3));
 		ClientThread c1 = new ClientThread("a", "xxx", file, job0);
 		ClientThread c2 = new ClientThread("b", "yyy", flie, job1);
 
 		ServerThread c3 = new ServerThread(job2);
-		ServerThread c4 = new ServerThread(job3);
+		ServerThread c4 = new ServerThread(job2);
+		ServerThread c5 = new ServerThread(job2);
+		// ServerThread c4 = new ServerThread(job3);
 		c1.start();
 		c2.start();
 

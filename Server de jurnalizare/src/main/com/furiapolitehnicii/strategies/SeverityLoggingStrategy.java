@@ -76,7 +76,7 @@ public class SeverityLoggingStrategy implements LoggingStrategy {
 	}
 
 	@Override
-	public void log() {
+	public synchronized void log() {
 		// TODO Auto-generated method stub
 		while (true) {
 
