@@ -33,7 +33,6 @@ public class ReadingJob implements Job {
 					new InputStreamReader(new FileInputStream(file)));
 			String line;
 			while ((line = bf.readLine()) != null) {
-
 				Matcher m = pattern.matcher(line);
 				String severity = null;
 				String content = null;

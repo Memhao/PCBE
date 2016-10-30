@@ -11,30 +11,39 @@ import com.furiapolitehnicii.models.ISeverity;
 import com.furiapolitehnicii.models.Message;
 import com.furiapolitehnicii.models.Resource;
 
-public class AuthorLoggingStrategy implements LoggingStrategy {
+public class ClientIDLoggingStrategy implements LoggingStrategy {
 	private Resource resource;
-	private Logger logger = Logger.getLogger(this.getClass().getName());
 	private String logPath;
 	private int logSize;
 	private int noOfRotations;
-	private Map<String, FileHandler> clientsName = new HashMap<String, FileHandler>();
+	private Map<String, Logger> clientsName = new HashMap<String, Logger>();
 
-	public AuthorLoggingStrategy(Resource resource, String logPath, int logSize,
-			int noOfRotations) {
+	public ClientIDLoggingStrategy(Resource resource, String logPath,
+			int logSize, int noOfRotations) {
 		this.resource = resource;
 		this.logPath = logPath;
 		this.logSize = logSize;
 		this.noOfRotations = noOfRotations;
 	}
 
-	private FileHandler getFileHandler(String clientName) {
+	private Logger getLogger(String clientName) {
 		if (!clientsName.containsKey(clientName)) {
 			FileHandler fileHandler = null;
 			try {
 				fileHandler = new FileHandler(logPath + "/" + clientName,
 						logSize, noOfRotations, true);
-				clientsName.put(clientName, fileHandler);
-				return fileHandler;
+				fileHandler.setFormatter(new java.util.logging.Formatter() {
+					@Override
+					public String format(LogRecord logRecord) {
+						return "[" + logRecord.getLevel() + "] " + "["
+								+ clientName + "]" + logRecord.getMessage()
+								+ "\r\n";
+					}
+				});
+				Logger logger = Logger.getLogger(clientName);
+				logger.addHandler(fileHandler);
+				clientsName.put(clientName, logger);
+				return logger;
 			} catch (SecurityException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -46,7 +55,7 @@ public class AuthorLoggingStrategy implements LoggingStrategy {
 		return clientsName.get(clientName);
 	}
 
-	private void logMessage(Message message) {
+	private void logMessage(Logger logger, Message message) {
 
 		ISeverity.Severity severity = message.getSeverity();
 		switch (severity) {
@@ -77,17 +86,9 @@ public class AuthorLoggingStrategy implements LoggingStrategy {
 				if (m.getSeverity() == ISeverity.Severity.EOF) {
 					break;
 				}
-				FileHandler fileHandler = getFileHandler(clientName);
-				fileHandler.setFormatter(new java.util.logging.Formatter() {
-					@Override
-					public String format(LogRecord logRecord) {
-						return "[" + logRecord.getLevel() + "] " + "["
-								+ clientName + "]" + logRecord.getMessage()
-								+ "\r\n";
-					}
-				});
-				logger.addHandler(fileHandler);
-				logMessage(m);
+
+				Logger logger = getLogger(clientName);
+				logMessage(logger, m);
 				System.out.println(m + "[" + m.getAuthor() + "]");
 
 			} catch (InterruptedException e) {
@@ -95,7 +96,7 @@ public class AuthorLoggingStrategy implements LoggingStrategy {
 				Thread.currentThread().interrupt();
 				e.printStackTrace();
 			}
+
 		}
 	}
-
 }
