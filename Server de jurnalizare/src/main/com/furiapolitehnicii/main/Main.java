@@ -4,13 +4,13 @@ import java.io.File;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.furiapolitehnicii.behaviours.ClientIDLoggingStrategy;
-import com.furiapolitehnicii.behaviours.ClientThread;
-import com.furiapolitehnicii.behaviours.LoggingJob;
-import com.furiapolitehnicii.behaviours.ReadingJob;
-import com.furiapolitehnicii.behaviours.ServerThread;
-import com.furiapolitehnicii.models.Message;
-import com.furiapolitehnicii.models.SharedResource;
+import com.furiapolitehnicii.jobs.LoggingJob;
+import com.furiapolitehnicii.jobs.ReadingJob;
+import com.furiapolitehnicii.resources.Message;
+import com.furiapolitehnicii.resources.SharedResource;
+import com.furiapolitehnicii.strategies.SeverityLoggingStrategy;
+import com.furiapolitehnicii.threads.client.ClientThread;
+import com.furiapolitehnicii.threads.server.ServerThread;
 
 public class Main {
 	public static void main(String[] args) {
@@ -25,11 +25,21 @@ public class Main {
 		File flie = new File(
 				"C:\\Users\\Xander\\git\\PCBE\\Server de jurnalizare\\src\\resources\\flie.txt");
 		ReadingJob job0 = new ReadingJob(file, "xxx", res);
-		ReadingJob job1 = new ReadingJob(flie, "yyy", rez);
+		ReadingJob job1 = new ReadingJob(flie, "yyy", res);
+		// LoggingJob job2 = new LoggingJob(
+		// new ClientIDLoggingStrategy(res, "src\\", 500, 2));
+		// LoggingJob job3 = new LoggingJob(
+		// new ClientIDLoggingStrategy(res, "src\\", 500, 3));
+		//
+		// LoggingJob job2 = new LoggingJob(
+		// new AuthorLoggingStrategy(res, "src\\", 1000, 2));
+		// LoggingJob job3 = new LoggingJob(
+		// new AuthorLoggingStrategy(res, "src\\", 1000, 3));
+
 		LoggingJob job2 = new LoggingJob(
-				new ClientIDLoggingStrategy(res, "src\\", 3000, 2));
+				new SeverityLoggingStrategy(res, "src\\", 500, 2));
 		LoggingJob job3 = new LoggingJob(
-				new ClientIDLoggingStrategy(rez, "src\\", 1000, 3));
+				new SeverityLoggingStrategy(res, "src\\", 500, 3));
 		ClientThread c1 = new ClientThread("a", "xxx", file, job0);
 		ClientThread c2 = new ClientThread("b", "yyy", flie, job1);
 

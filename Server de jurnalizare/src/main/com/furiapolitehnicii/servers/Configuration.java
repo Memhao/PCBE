@@ -1,6 +1,6 @@
-package com.furiapolitehnicii.configurations;
+package com.furiapolitehnicii.servers;
 
-import com.furiapolitehnicii.behaviours.LoggingStrategy;
+import com.furiapolitehnicii.strategies.LoggingStrategy;
 
 /**
  * TODO: look at Constants class on how to comment.

@@ -1,4 +1,6 @@
-package com.furiapolitehnicii.behaviours;
+package com.furiapolitehnicii.jobs;
+
+import com.furiapolitehnicii.strategies.LoggingStrategy;
 
 public class LoggingJob implements Job {
 

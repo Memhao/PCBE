@@ -1,4 +1,4 @@
-package com.furiapolitehnicii.models;
+package com.furiapolitehnicii.resources;
 
 public interface Resource {
 	void put(Message smt) throws InterruptedException;

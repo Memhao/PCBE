@@ -1,13 +1,13 @@
-package com.furiapolitehnicii.behaviours;
+package com.furiapolitehnicii.strategies;
 
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import com.furiapolitehnicii.models.ISeverity;
-import com.furiapolitehnicii.models.Message;
-import com.furiapolitehnicii.models.Resource;
+import com.furiapolitehnicii.constants.ISeverity;
+import com.furiapolitehnicii.resources.Message;
+import com.furiapolitehnicii.resources.Resource;
 
 public class SingleLoggingStrategy implements LoggingStrategy {
 

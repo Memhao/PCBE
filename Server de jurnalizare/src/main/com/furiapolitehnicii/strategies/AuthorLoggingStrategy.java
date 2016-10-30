@@ -1,49 +1,41 @@
-package com.furiapolitehnicii.behaviours;
+package com.furiapolitehnicii.strategies;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import com.furiapolitehnicii.models.ISeverity;
-import com.furiapolitehnicii.models.Message;
-import com.furiapolitehnicii.models.Resource;
+import com.furiapolitehnicii.constants.ISeverity;
+import com.furiapolitehnicii.resources.Message;
+import com.furiapolitehnicii.resources.Resource;
 
-public class ClientIDLoggingStrategy implements LoggingStrategy {
+public class AuthorLoggingStrategy implements LoggingStrategy {
 	private Resource resource;
+	private Logger logger = Logger.getLogger(this.getClass().getName());
 	private String logPath;
 	private int logSize;
 	private int noOfRotations;
-	private Map<String, Logger> clientsName = new HashMap<String, Logger>();
+	private Map<String, FileHandler> clientsName = new HashMap<String, FileHandler>();
 
-	public ClientIDLoggingStrategy(Resource resource, String logPath,
-			int logSize, int noOfRotations) {
+	public AuthorLoggingStrategy(Resource resource, String logPath, int logSize,
+			int noOfRotations) {
 		this.resource = resource;
 		this.logPath = logPath;
 		this.logSize = logSize;
 		this.noOfRotations = noOfRotations;
 	}
 
-	private Logger getLogger(String clientName) {
+	private FileHandler getFileHandler(String clientName) {
 		if (!clientsName.containsKey(clientName)) {
 			FileHandler fileHandler = null;
 			try {
 				fileHandler = new FileHandler(logPath + "/" + clientName,
 						logSize, noOfRotations, true);
-				fileHandler.setFormatter(new java.util.logging.Formatter() {
-					@Override
-					public String format(LogRecord logRecord) {
-						return "[" + logRecord.getLevel() + "] " + "["
-								+ clientName + "]" + logRecord.getMessage()
-								+ "\r\n";
-					}
-				});
-				Logger logger = Logger.getLogger(clientName);
-				logger.addHandler(fileHandler);
-				clientsName.put(clientName, logger);
-				return logger;
+				clientsName.put(clientName, fileHandler);
+				return fileHandler;
 			} catch (SecurityException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -55,7 +47,7 @@ public class ClientIDLoggingStrategy implements LoggingStrategy {
 		return clientsName.get(clientName);
 	}
 
-	private void logMessage(Logger logger, Message message) {
+	private void logMessage(Message message) {
 
 		ISeverity.Severity severity = message.getSeverity();
 		switch (severity) {
@@ -86,17 +78,29 @@ public class ClientIDLoggingStrategy implements LoggingStrategy {
 				if (m.getSeverity() == ISeverity.Severity.EOF) {
 					break;
 				}
+				FileHandler fileHandler = getFileHandler(clientName);
+				fileHandler.setFormatter(new java.util.logging.Formatter() {
+					@Override
+					public String format(LogRecord logRecord) {
+						return "[" + logRecord.getLevel() + "] " + "["
+								+ clientName + "]" + logRecord.getMessage()
+								+ "\r\n";
+					}
+				});
+				logger.addHandler(fileHandler);
+				logMessage(m);
+				Handler[] handlers = logger.getHandlers();
 
-				Logger logger = getLogger(clientName);
-				logMessage(logger, m);
-				System.out.println(m + "[" + m.getAuthor() + "]");
+				for (int i = 0; i < handlers.length; i++) {
+					logger.removeHandler(handlers[i]);
+				}
 
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				Thread.currentThread().interrupt();
 				e.printStackTrace();
 			}
-
 		}
 	}
+
 }

@@ -1,4 +1,4 @@
-package com.furiapolitehnicii.behaviours;
+package com.furiapolitehnicii.servers;
 /**
  * TODO: look at Constants class on how to comment.Implement methods
  * 

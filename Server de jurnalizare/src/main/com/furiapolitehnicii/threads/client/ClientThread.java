@@ -1,6 +1,8 @@
-package com.furiapolitehnicii.behaviours;
+package com.furiapolitehnicii.threads.client;
 
 import java.io.File;
+
+import com.furiapolitehnicii.jobs.Job;
 /**
  *
  * @author Mihut

@@ -1,4 +1,7 @@
-package com.furiapolitehnicii.models;
+package com.furiapolitehnicii.resources;
+
+import com.furiapolitehnicii.constants.ISeverity;
+
 /**
  * TODO: look at Constants class on how to comment.
  *

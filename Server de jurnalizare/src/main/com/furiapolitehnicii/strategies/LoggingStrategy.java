@@ -1,4 +1,4 @@
-package com.furiapolitehnicii.behaviours;
+package com.furiapolitehnicii.strategies;
 
 public interface LoggingStrategy {
 	void log();

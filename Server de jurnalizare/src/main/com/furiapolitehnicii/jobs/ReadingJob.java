@@ -1,4 +1,4 @@
-package com.furiapolitehnicii.behaviours;
+package com.furiapolitehnicii.jobs;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,9 +10,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.furiapolitehnicii.constants.Constants;
-import com.furiapolitehnicii.models.ISeverity;
-import com.furiapolitehnicii.models.Message;
-import com.furiapolitehnicii.models.SharedResource;
+import com.furiapolitehnicii.constants.ISeverity;
+import com.furiapolitehnicii.resources.Message;
+import com.furiapolitehnicii.resources.SharedResource;
 
 public class ReadingJob implements Job {
 	private File file;
@@ -27,7 +27,7 @@ public class ReadingJob implements Job {
 	}
 	// TODO Test Case need for syncronization
 	private void getMessages() throws InterruptedException {
-		Pattern pattern = Pattern.compile(SEVERITY_PATTERN);
+		Pattern pattern = Pattern.compile(Constants.SEVERITY_PATTERN);
 		try {
 			BufferedReader bf = new BufferedReader(
 					new InputStreamReader(new FileInputStream(file)));

@@ -30,3 +30,52 @@
 [DEBUG] YYYYYYYYYYYYYYYYYYYYYY
 [INFO] ZZZZZZZZZZZZZZZZZZZZZZZZZZ
 [CRITICAL] HGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+
+
+[CRITICAL] Bla bla lsadlasldalsd	6
+[WARNING] dalskdmlaskdmalsdas	7
+[DEBUG] adlsamlkmglkremveormvoweinvmso ms;  8
+[INFO] Hello from the other world			9
+[ERROR] I'm eating wafer rolls they are so good. 10
+[INFO] I'd like to drink some vodka too.        	11
+[DEBUG] Shoul I go this far?  					12
+[CRITICAL] Bla bla lsadlasldalsd				13
+[CRITICAL] Bla bla lsadlasldalsd1					14
+[CRITICAL] Bla bla lsadlasldalsd2				15
+[DEBUG] adlsamlkmglkremveormvoweinvmso ms; 		16
+[INFO] Hello from the other world				17
+[ERROR] I'm eating wafer rolls they are so good.		18
+[INFO] I'd like to drink some vodka too.				19
+[DEBUG] Shoul I go this far?							20
+[CRITICAL] Bla bla lsadlasldalsd						21
+[WARNING] dalskdmlaskdmalsdas							22
+[DEBUG] adlsamlkmglkremveormvoweinvmso ms; 				23		
+[INFO] Hello from the other world						24
+[ERROR] I'm eating wafer rolls they are so good.		25
+[INFO] I'd like to drink some vodka too.				26
+[DEBUG] Shoul I go this far?							27
+[CRITICAL] Bla bla lsadlasldalsd						28
+[CRITICAL] Bla bla lsadlasldalsd1						29
+[CRITICAL] Bla bla lsadlasldalsd2						30
+[DEBUG] adlsamlkmglkremveormvoweinvmso ms; 				31	
+[INFO] Hello from the other world						32
+[ERROR] I'm eating wafer rolls they are so good.		33
+[INFO] I'd like to drink some vodka too.				34
+[DEBUG] Shoul I go this far?							35
+[CRITICAL] Bla bla lsadlasldalsd						36
+[CRITICAL] Bla bla lsadlasldalsd1						37
+[CRITICAL] Bla bla lsadlasldalsd2						38
+[INFO] I'd like to drink some vodka too.				39	
+[DEBUG] Shoul I go this far?							40
+
+
+
+
+[ERROR] I'm dasdasd  hrt yrntn y
+[INFO] r rt rt rt hrth rth rth
+[DEBUG]  trh rthhtyhhy hty  yh ty hty ht
+[CRITICAL] hyt htyh tyh ty h
+[INFO] Hello uiki ki ki kiki ki k
+[ERROR]  kiki kii k kki ki kiki
+[INFO]  plpl plpl plplpl

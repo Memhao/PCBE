@@ -1,4 +1,4 @@
-package com.furiapolitehnicii.models;
+package com.furiapolitehnicii.resources;
 
 import java.util.concurrent.BlockingQueue;
 /**

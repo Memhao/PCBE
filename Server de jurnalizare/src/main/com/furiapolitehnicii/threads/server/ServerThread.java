@@ -1,4 +1,6 @@
-package com.furiapolitehnicii.behaviours;
+package com.furiapolitehnicii.threads.server;
+
+import com.furiapolitehnicii.jobs.Job;
 
 public class ServerThread extends Thread {
 	private Job job;
