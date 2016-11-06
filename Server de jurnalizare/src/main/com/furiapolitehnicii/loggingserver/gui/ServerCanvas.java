@@ -5,16 +5,15 @@ import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.Box;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import com.furiapolitehnicii.loggingserver.server.Configuration;
@@ -41,7 +40,7 @@ public class ServerCanvas extends JFrame {
 	// config
 	private JTextField tfNoOfThreads, tfLogSize, tfNoOfRot, tfLogPath;
 
-	private JCheckBox cbClient, cbSeverity;
+	private JRadioButton rbClient, rbSeverity;
 
 	public ServerCanvas(String serverName) {
 
@@ -63,8 +62,8 @@ public class ServerCanvas extends JFrame {
 
 	}
 	private void loadDefaultConfiguration() {
-		cbClient.setSelected(true);
-		cbSeverity.setSelected(false);
+		rbClient.setSelected(true);
+		rbSeverity.setSelected(false);
 		tfLogPath.setText("src/out");
 		tfLogSize.setText("1000");
 		tfNoOfRot.setText("2");
@@ -95,33 +94,45 @@ public class ServerCanvas extends JFrame {
 	}
 	private void initConfigPanel() {
 		panelConfig = new JPanel();
-		lbConfig = new JLabel("Configuration");
-		cbClient = new JCheckBox("Client");
-		cbSeverity = new JCheckBox("Severity");
-		cbClient.setBackground(Color.white);
-		cbSeverity.setBackground(Color.white);
-		cbClient.addItemListener(new ClientSeveritySelected());
-		cbSeverity.addItemListener(new ClientSeveritySelected());
 
-		cp.add(cbClient);
-		cp.add(cbSeverity);
+		lbConfig = new JLabel("====Configuration====");
+		rbClient = new JRadioButton("Client");
+		rbSeverity = new JRadioButton("Severity");
+		rbClient.setBackground(Color.white);
+		rbSeverity.setBackground(Color.white);
+		rbClient.setActionCommand("CLIENT_CMD");
+		rbSeverity.setActionCommand("SEVERITY_CMD");
+		rbClient.addActionListener(new MutexListener());
+		rbSeverity.addActionListener(new MutexListener());
 
-		panelConfig.add(lbConfig);
-		panelConfig.add(new JLabel("No of rotation"));
-		panelConfig.add(tfNoOfRot = new JTextField(5));
-		panelConfig.add(new JLabel("Log size"));
-		panelConfig.add(tfLogSize = new JTextField(5));
-		panelConfig.add(new JLabel("No of threads per client"));
-		panelConfig.add(tfNoOfThreads = new JTextField(5));
-		panelConfig.add(new JLabel("Insert Log Path"));
-		panelConfig.add(tfLogPath = new JTextField(10));
+		Box box = Box.createVerticalBox();
+		box.setVisible(true);
+		box.add(lbConfig);
+		box.add(new JLabel("Logging criteria"));
+		Box radio = Box.createHorizontalBox();
+		box.setVisible(true);
+		radio.add(rbClient);
+		radio.add(rbSeverity);
+		box.add(radio);
+		box.add(new JLabel("No of rotation"));
+		box.add(tfNoOfRot = new JTextField(5));
+		box.add(new JLabel("Log size"));
+		box.add(tfLogSize = new JTextField(5));
+		box.add(new JLabel("No of threads per client"));
+		box.add(tfNoOfThreads = new JTextField(5));
+		box.add(new JLabel("Insert Log Path"));
+		box.add(tfLogPath = new JTextField(10));
+		panelConfig.add(box);
 		loadDefaultConfiguration();
 	}
 	private void setPanels() {
-		cp.add(panelServer);
-		cp.add(panelClient);
-		cp.add(panelConfig);
+		Box box = Box.createVerticalBox();
+		box.add(panelServer);
+		box.add(panelClient);
+		box.add(panelConfig);
+		cp.add(box);
 	}
+
 	/**
 	 *
 	 * @author xander
@@ -139,7 +150,7 @@ public class ServerCanvas extends JFrame {
 			String logPath = tfLogPath.getText();
 			System.out.println(logPath);
 			Criteria criteria;
-			if (cbClient.isSelected()) {
+			if (rbClient.isSelected()) {
 				criteria = Criteria.CLIENT;
 			} else
 				criteria = Criteria.SEVERITY;
@@ -175,22 +186,17 @@ public class ServerCanvas extends JFrame {
 		}
 
 	}
-	private class ClientSeveritySelected implements ItemListener {
+	class MutexListener implements ActionListener {
 
 		@Override
-		public void itemStateChanged(ItemEvent arg0) {
+		public void actionPerformed(ActionEvent event) {
 			// TODO Auto-generated method stub
-			if (cbClient.isSelected() && cbSeverity.isSelected()
-					|| !cbSeverity.isSelected() && !cbClient.isSelected()) {
-				// TODO
-			} else if (cbClient.isSelected()) {
-				cbSeverity.setSelected(false);
-			} else if (cbSeverity.isSelected()) {
-				cbClient.setSelected(false);
-			}
+			if (event.getActionCommand() == "CLIENT_CMD")
+				rbSeverity.setSelected(false);
+			else if (event.getActionCommand() == "SEVERITY_CMD")
+				rbClient.setSelected(false);
 
 		}
 
 	}
-
 }
