@@ -9,6 +9,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.Box;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -106,9 +107,9 @@ public class ServerCanvas extends JFrame {
 		rbSeverity.setBackground(Color.white);
 		rbClient.setActionCommand("CLIENT_CMD");
 		rbSeverity.setActionCommand("SEVERITY_CMD");
-		rbClient.addActionListener(new MutexListener());
-		rbSeverity.addActionListener(new MutexListener());
-
+		ButtonGroup group = new ButtonGroup();
+		group.add(rbClient);
+		group.add(rbSeverity);
 		Box box = Box.createVerticalBox();
 		box.setVisible(true);
 		box.add(lbConfig);
@@ -231,19 +232,6 @@ public class ServerCanvas extends JFrame {
 			}
 			panelServer.setBackground(Color.GREEN);
 			panelServer.repaint();
-		}
-
-	}
-	class MutexListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent event) {
-			// TODO Auto-generated method stub
-			if (event.getActionCommand() == "CLIENT_CMD")
-				rbSeverity.setSelected(false);
-			else if (event.getActionCommand() == "SEVERITY_CMD")
-				rbClient.setSelected(false);
-
 		}
 
 	}
