@@ -17,10 +17,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.furiapolitehnicii.loggingserver.client.Client;
-import com.furiapolitehnicii.loggingserver.server.Server;
 import com.furiapolitehnicii.loggingserver.server.Configuration;
 import com.furiapolitehnicii.loggingserver.server.Criteria;
+import com.furiapolitehnicii.loggingserver.server.Server;
 
 public class ServerCanvas extends JFrame {
 	/**
@@ -38,7 +37,7 @@ public class ServerCanvas extends JFrame {
 	private JPanel panelClient;
 	private JPanel panelConfig;
 	private JLabel lbConfig;
-	private JTextField tfIDClient, tfPath;
+	private JTextField tfPath;
 	// config
 	private JTextField tfNoOfThreads, tfLogSize, tfNoOfRot, tfLogPath;
 
@@ -63,6 +62,15 @@ public class ServerCanvas extends JFrame {
 		setPanels();
 
 	}
+	private void loadDefaultConfiguration() {
+		cbClient.setSelected(true);
+		cbSeverity.setSelected(false);
+		tfLogPath.setText("src/out");
+		tfLogSize.setText("1000");
+		tfNoOfRot.setText("2");
+		tfNoOfThreads.setText("10");
+		tfPath.setText("src/Logs");
+	}
 
 	private void initServerPanel() {
 		panelServer = new JPanel();
@@ -78,9 +86,6 @@ public class ServerCanvas extends JFrame {
 	}
 	private void initClientPanel() {
 		panelClient = new JPanel();
-		panelClient.add(new JLabel("Client id:"));
-		tfIDClient = new JTextField(10);
-		panelClient.add(tfIDClient);
 		tfPath = new JTextField(10);
 		panelClient.add(new JLabel("Client path file:"));
 		panelClient.add(tfPath);
@@ -110,6 +115,7 @@ public class ServerCanvas extends JFrame {
 		panelConfig.add(tfNoOfThreads = new JTextField(5));
 		panelConfig.add(new JLabel("Insert Log Path"));
 		panelConfig.add(tfLogPath = new JTextField(10));
+		loadDefaultConfiguration();
 	}
 	private void setPanels() {
 		cp.add(panelServer);
@@ -125,11 +131,13 @@ public class ServerCanvas extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
+
 			panelServer.setBackground(Color.CYAN);
 			int logSize = Integer.parseInt(tfLogSize.getText());
 			int noOfRotations = Integer.parseInt(tfNoOfRot.getText());
 			int noOfLoggingThreads = Integer.parseInt(tfNoOfThreads.getText());
 			String logPath = tfLogPath.getText();
+			System.out.println(logPath);
 			Criteria criteria;
 			if (cbClient.isSelected()) {
 				criteria = Criteria.CLIENT;
@@ -160,10 +168,8 @@ public class ServerCanvas extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			String client_id = tfIDClient.getText();
-			String client_path = tfPath.getText();
-			Client c = new Client(client_id, client_path, "xx");
-			server.startClient(c);
+			String inputPath = tfPath.getText();
+			server.startClients(inputPath);
 			panelServer.setBackground(Color.GREEN);
 			panelServer.repaint();
 		}

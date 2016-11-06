@@ -31,7 +31,7 @@ public class ClientNameLoggingStrategy implements ILoggingStrategy {
 			FileHandler fileHandler = null;
 			try {
 				fileHandler = new FileHandler(
-						config.getLogPath() + clientName + "_%g.txt",
+						config.getLogPath() + "/" + clientName + "_%g.txt",
 						config.getLogSize(), config.getNoOfRotations(), true);
 				fileHandler.setFormatter(new java.util.logging.Formatter() {
 					@Override
@@ -59,22 +59,24 @@ public class ClientNameLoggingStrategy implements ILoggingStrategy {
 	private void logMessage(Logger logger, Message message) {
 
 		ISeverity.Severity severity = message.getSeverity();
+		String msg = message.getContent();
 		switch (severity) {
 			case INFO :
 			case DEBUG :
-				logger.info(message.toString());
+				logger.info(msg);
 				break;
 			case WARNING :
-				logger.warning(message.toString());
+				logger.warning(msg);
 				break;
 			case ERROR :
 			case CRITICAL :
-				logger.severe(message.toString());
+				logger.severe(msg);
 				break;
 			default :
 				break;
 		}
 	}
+	// TODO alert box when becomes true
 	private boolean allGamesAreOver(ISeverity.Severity severity) {
 
 		if (ISeverity.Severity.EOF.equals(severity)) {

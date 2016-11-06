@@ -1,11 +1,12 @@
 package com.furiapolitehnicii.loggingserver.resources;
 
 public class Message {
-	private String line;
+	private String content;
 	private String clientID;
 	private ISeverity.Severity severity;
-	public Message(ISeverity.Severity severity, String clientID, String line) {
-		this.line = line;
+	public Message(ISeverity.Severity severity, String clientID,
+			String content) {
+		this.content = content;
 		this.clientID = clientID;
 		this.severity = severity;
 	}
@@ -15,7 +16,7 @@ public class Message {
 	public String getClientID() {
 		return this.clientID;
 	}
-	public String toString() {
-		return this.line;
+	public String getContent() {
+		return content;
 	}
 }

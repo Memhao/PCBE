@@ -6,7 +6,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class UniqResource implements IResource {
 	private final BlockingQueue<Message> bucket;
 
-	private static final UniqResource instance = new UniqResource();
+	private static UniqResource instance;
 	private UniqResource() {
 		// TODO Auto-generated constructor stub
 		this.bucket = new LinkedBlockingQueue<>();

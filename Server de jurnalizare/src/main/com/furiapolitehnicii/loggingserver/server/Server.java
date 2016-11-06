@@ -1,5 +1,7 @@
 package com.furiapolitehnicii.loggingserver.server;
 
+import java.io.File;
+
 import com.furiapolitehnicii.loggingserver.client.Client;
 import com.furiapolitehnicii.loggingserver.client.ClientThread;
 import com.furiapolitehnicii.loggingserver.jobs.Job;
@@ -20,11 +22,26 @@ public class Server {
 		this.resource = UniqResource.getInstance();
 
 	}
-	public void startClient(Client client) {
-		// TODO start client on action
-		new Thread(new ClientThread(client.getAddress(),
-				client.getLoggingFileName(), new ReadingJob(client.getPath(),
-						client.getAddress(), resource))).start();
+	public void startClients(String inputPath) {
+		File inputFolder = new File(inputPath);
+		if (inputFolder != null && inputFolder.isDirectory()) {
+			File[] folders = inputFolder.listFiles();
+			for (File folder : folders) {
+				if (folder != null && folder.isDirectory()) {
+					Client client = new Client(folder.getAbsolutePath());
+					ReadingJob readingJob = new ReadingJob(
+							folder.getAbsolutePath(), client.getClientName(),
+							resource);
+					ClientThread clientThread = new ClientThread(client,
+							readingJob);
+					Thread thread = new Thread(clientThread);
+					thread.start();
+				} else
+					System.err.println(folder.getName()
+							+ " is not a folder. The file was ignored.");
+			}
+		} else
+			System.err.println("Log path from GUI does not represent a folder");
 
 	}
 	public void startServer() {

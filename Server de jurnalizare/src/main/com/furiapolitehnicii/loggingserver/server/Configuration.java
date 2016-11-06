@@ -16,6 +16,7 @@ public class Configuration {
 		this.noOfRotations = noOfRotation;
 		this.noOfLoggingThreads = noOfLoggingThreads;
 		this.criteria = criteria;
+		this.logPath = logPath;
 	}
 
 	public Criteria getCriteria() {

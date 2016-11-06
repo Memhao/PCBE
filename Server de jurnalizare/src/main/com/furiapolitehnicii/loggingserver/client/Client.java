@@ -1,25 +1,17 @@
 package com.furiapolitehnicii.loggingserver.client;
 
 public class Client {
-	private String address;
-	private String path;
-	private String loggingFileName;
+	private String folderPath;
 
-	public Client(String address, String path, String loggingFileName) {
-		this.address = address;
-		this.path = path;
-		this.loggingFileName = loggingFileName;
+	public Client(String path) {
+		this.folderPath = path;
 	}
 	public String getPath() {
-		return this.path;
+		return this.folderPath;
 	}
-	public String getAddress() {
-		return this.address;
-	}
-	public String getLoggingFileName() {
-		return loggingFileName;
-	}
-	public String toString() {
-		return this.address;
+	public String getClientName() {
+		if (folderPath.contains("\\"))
+			return folderPath.substring(folderPath.lastIndexOf('\\') + 1);
+		return folderPath.substring(folderPath.lastIndexOf('/') + 1);
 	}
 }
