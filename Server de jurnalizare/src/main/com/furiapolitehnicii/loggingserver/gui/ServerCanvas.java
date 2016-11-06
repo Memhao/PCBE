@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import com.furiapolitehnicii.constants.Constants;
 import com.furiapolitehnicii.loggingserver.server.Configuration;
 import com.furiapolitehnicii.loggingserver.server.Criteria;
 import com.furiapolitehnicii.loggingserver.server.Server;
@@ -36,9 +37,9 @@ public class ServerCanvas extends JFrame {
 	private JPanel panelClient;
 	private JPanel panelConfig;
 	private JLabel lbConfig;
-	private JTextField tfPath;
+	private JTextField tfSourcePath, tfLogPath, tfConsole;
 	// config
-	private JTextField tfNoOfThreads, tfLogSize, tfNoOfRot, tfLogPath;
+	private JTextField tfNoOfThreads, tfLogSize, tfNoOfRot;
 
 	private JRadioButton rbClient, rbSeverity;
 
@@ -46,6 +47,8 @@ public class ServerCanvas extends JFrame {
 
 		this.serverName = serverName;
 		this.cp = getContentPane();
+		this.tfConsole = new JTextField(5);
+
 		cp.setLayout(new GridLayout(0, 1));
 
 		setTitle("Server");
@@ -58,6 +61,7 @@ public class ServerCanvas extends JFrame {
 		initServerPanel();
 		initClientPanel();
 		initConfigPanel();
+		cp.add(tfConsole);
 		setPanels();
 
 	}
@@ -68,7 +72,7 @@ public class ServerCanvas extends JFrame {
 		tfLogSize.setText("1000");
 		tfNoOfRot.setText("2");
 		tfNoOfThreads.setText("10");
-		tfPath.setText("src/Logs");
+		tfSourcePath.setText("src/Logs");
 	}
 
 	private void initServerPanel() {
@@ -85,9 +89,9 @@ public class ServerCanvas extends JFrame {
 	}
 	private void initClientPanel() {
 		panelClient = new JPanel();
-		tfPath = new JTextField(10);
+		tfSourcePath = new JTextField(10);
 		panelClient.add(new JLabel("Client path file:"));
-		panelClient.add(tfPath);
+		panelClient.add(tfSourcePath);
 		bLogin = new JButton("Login");
 		bLogin.addActionListener(new LoginBehavior());
 		panelClient.add(bLogin);
@@ -115,13 +119,15 @@ public class ServerCanvas extends JFrame {
 		radio.add(rbSeverity);
 		box.add(radio);
 		box.add(new JLabel("No of rotation"));
-		box.add(tfNoOfRot = new JTextField(5));
+
+		box.add(tfNoOfRot = new JTextField());
 		box.add(new JLabel("Log size"));
-		box.add(tfLogSize = new JTextField(5));
+		box.add(tfLogSize = new JTextField());
 		box.add(new JLabel("No of threads per client"));
-		box.add(tfNoOfThreads = new JTextField(5));
+		box.add(tfNoOfThreads = new JTextField());
 		box.add(new JLabel("Insert Log Path"));
-		box.add(tfLogPath = new JTextField(10));
+		box.add(tfLogPath = new JTextField());
+
 		panelConfig.add(box);
 		loadDefaultConfiguration();
 	}
@@ -132,7 +138,56 @@ public class ServerCanvas extends JFrame {
 		box.add(panelConfig);
 		cp.add(box);
 	}
+	private Configuration getConfig() {
+		int logSize = 1024;
+		int noOfRotations = 3;
+		int noOfLoggingThreads = 10;
+		String logPath = "src/out";
 
+		String logSize_str = tfLogSize.getText();
+		boolean logSize_b = logSize_str.matches(Constants.FIVE_DIGIT_PATTERN);
+		if (logSize_b)
+			logSize = Integer.parseInt(logSize_str);
+		else
+			tfConsole.setText("Invalid log size default 1K considered"
+					+ System.lineSeparator());
+
+		String noOfRotations_str = tfNoOfRot.getText();
+		boolean noOfRotations_b = noOfRotations_str
+				.matches(Constants.THREE_DIGIT_PATTERN);
+		if (noOfRotations_b)
+			noOfRotations = Integer.parseInt(noOfRotations_str);
+		else
+			tfConsole.setText("Invalid no of rotations default 3 considered"
+					+ System.lineSeparator());
+
+		String noOfThreads_str = tfNoOfThreads.getText();
+		boolean noOfThreads_b = noOfThreads_str
+				.matches(Constants.THREE_DIGIT_PATTERN);
+		if (noOfThreads_b)
+			noOfLoggingThreads = Integer.parseInt(noOfThreads_str);
+		else
+			tfConsole.setText("Invalid no of threads default 10 considered"
+					+ System.lineSeparator());
+
+		String extractedlogPath = tfLogPath.getText();
+		boolean tfLogPath_b = extractedlogPath.matches(Constants.PATH_PATERN);
+		if (tfLogPath_b)
+			logPath = extractedlogPath;
+		else
+			tfConsole.setText("Invalid path default src/out considered"
+					+ System.lineSeparator());
+
+		System.out.println(logPath);
+		Criteria criteria;
+		if (rbClient.isSelected()) {
+			criteria = Criteria.CLIENT;
+		} else
+			criteria = Criteria.SEVERITY;
+
+		return new Configuration(serverName, logSize, noOfRotations,
+				noOfLoggingThreads, logPath, criteria);
+	}
 	/**
 	 *
 	 * @author xander
@@ -144,19 +199,7 @@ public class ServerCanvas extends JFrame {
 			// TODO Auto-generated method stub
 
 			panelServer.setBackground(Color.CYAN);
-			int logSize = Integer.parseInt(tfLogSize.getText());
-			int noOfRotations = Integer.parseInt(tfNoOfRot.getText());
-			int noOfLoggingThreads = Integer.parseInt(tfNoOfThreads.getText());
-			String logPath = tfLogPath.getText();
-			System.out.println(logPath);
-			Criteria criteria;
-			if (rbClient.isSelected()) {
-				criteria = Criteria.CLIENT;
-			} else
-				criteria = Criteria.SEVERITY;
-
-			Configuration config = new Configuration(serverName, logSize,
-					noOfRotations, noOfLoggingThreads, logPath, criteria);
+			Configuration config = getConfig();
 			server = new Server(serverName, config);
 			server.startServer();
 			panelServer.setBackground(Color.BLUE);
@@ -179,8 +222,13 @@ public class ServerCanvas extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
-			String inputPath = tfPath.getText();
-			server.startClients(inputPath);
+			String inputPath = tfSourcePath.getText();
+			if (inputPath.matches(Constants.PATH_PATERN))
+				server.startClients(inputPath);
+			else {
+				server.startClients("src/Logs");
+				tfConsole.setText("Default input considered for input path");
+			}
 			panelServer.setBackground(Color.GREEN);
 			panelServer.repaint();
 		}
